@@ -11,6 +11,7 @@ Very simple command line program I made that restarts Steam, I use this pretty o
    - Alternatively, open `CMD` and run this command, `taskkill /F /IM explorer.exe & start explorer`
 # Arguments
 - -help
+- -github `Opens GitHub page`
 - -yes, -y `Skip confirmation`
 - -debug `Runs the app in debug mode`
 - -version, -ver `Shows installed version`
