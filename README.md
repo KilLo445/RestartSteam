@@ -2,7 +2,7 @@
 Very simple command line program I made that restarts Steam, I use this pretty often so I thought other people might too.
 
 # Installation
-1. Download the latest release and put it in a safe location, such as `%localappdata%\Programs\RestartSteam`
+1. Download the [latest release](https://github.com/KilLo445/RestartSteam/releases/latest) and put it in a safe location, such as `%localappdata%\Programs\RestartSteam`
 2. Create a shortcut to `RestartSteam.exe` in `C:\ProgramData\Microsoft\Windows\Start Menu\Programs`
    - If you do this, the program will show up in Windows Search, so you can just search "RestartSteam"
    - Additionally, you can add `-yes` or `-y` to the end of the shortcut to bypass the confirmation prompt
