@@ -23,20 +23,22 @@ namespace RestartSteam
                 if (arg == "-help")
                 {
                     Console.WriteLine("-help - Opens this");
+                    Console.WriteLine("-github - Opens GitHub page");
                     Console.WriteLine("-yes - Skip confirmation");
                     Console.WriteLine("-y");
                     Console.WriteLine("-debug - Runs the app in debug mode");
                     Console.WriteLine("-version - Shows installed version");
                     Console.WriteLine("-ver");
-
-                    Console.WriteLine();
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadKey();
                     Environment.Exit(0);
                 }
                 if (arg == "-y" || arg == "-yes")
                 {
                     SkipConfirmation = true;
+                }
+                if (arg == "-github")
+                {
+                    Process.Start("https://github.com/KilLo445/RestartSteam");
+                    Environment.Exit(0);
                 }
                 if (arg == "-debug")
                 {
@@ -46,9 +48,6 @@ namespace RestartSteam
                 if (arg == "-ver" || arg == "-version")
                 {
                     Console.WriteLine($"You have v{Version} installed");
-                    Console.WriteLine();
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadKey();
                     Environment.Exit(0);
                 }
             }
