@@ -9,54 +9,80 @@ namespace RestartSteam
 {
     internal class Program
     {
+        static bool SkipConfirmation = false;
+        static bool RestartConfirmed = false;
+        static bool DebugMode = false;
+
+        static string rootPath = Path.Combine(Directory.GetCurrentDirectory());
+
         static void Main(string[] args)
         {
             Console.Title = "Restart Steam";
-            string Version = "1.0.0";
+            string Version = "2.0.0";
 
-            bool SkipConfirmation = false;
-            bool RestartConfirmed = false;
-            bool DebugMode = false;
+            using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true))
+            {
+                regKey.CreateSubKey("KilLo");
+                using (RegistryKey regKey2 = Registry.CurrentUser.OpenSubKey("Software\\KilLo", true))
+                {
+                    regKey2.CreateSubKey("RestartSteam");
+                    regKey2.Close();
+                }
+                regKey.Close();
+            }
+
+            using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software\\KilLo\\RestartSteam", true))
+            {
+                regKey.SetValue("InstallPath", rootPath);
+                regKey.SetValue("Version", Version);
+            }
 
             foreach (string arg in Environment.GetCommandLineArgs())
             {
-                if (arg == "-help")
+                if (arg == "-h" || arg == "-help")
                 {
                     Console.WriteLine("-help - Opens this");
                     Console.WriteLine("-github - Opens GitHub page");
+                    Console.WriteLine("-restart - Restart Steam");
                     Console.WriteLine("-yes - Skip confirmation");
-                    Console.WriteLine("-y");
                     Console.WriteLine("-debug - Runs the app in debug mode");
                     Console.WriteLine("-version - Shows installed version");
-                    Console.WriteLine("-ver");
-                    Environment.Exit(0);
+                    Console.WriteLine("-update - Update to the latest version");
+                    Console.WriteLine();
+                    Console.WriteLine("These also work with the first letter of each arg, -r, -y, etc.");
                 }
-                if (arg == "-y" || arg == "-yes")
-                {
-                    SkipConfirmation = true;
-                }
-                if (arg == "-github")
-                {
-                    Process.Start("https://github.com/KilLo445/RestartSteam");
-                    Environment.Exit(0);
-                }
-                if (arg == "-debug")
-                {
-                    DebugMode = true;
-                    Console.Title = "Restart Steam [Debug Mode]";
-                }
-                if (arg == "-ver" || arg == "-version")
-                {
-                    Console.WriteLine($"You have v{Version} installed");
-                    Environment.Exit(0);
-                }
+                if (arg == "-g" || arg == "-github") { Process.Start("https://github.com/KilLo445/RestartSteam"); }
+                if (arg == "-r" || arg == "-restart") { RestartSteam(); }
+                if (arg == "-v" || arg == "-ver" || arg == "-version") { Console.WriteLine($"You have v{Version} installed"); }
+                if (arg == "-u" || arg == "-update") { Update(); }
+            }
+
+            Environment.Exit(0);
+        }
+
+        private static void Update()
+        {
+            string installer = Path.Combine(rootPath, "RestartSteamInstaller.exe");
+
+            Console.WriteLine("Opening RestartSteamInstaller.exe");
+            if (File.Exists(installer)) { Process.Start(installer); }
+            else { Console.WriteLine("RestartSteamInstaller.exe does not exist"); }
+            Environment.Exit(0);
+        }
+
+        private static void RestartSteam()
+        {
+            foreach (string arg in Environment.GetCommandLineArgs())
+            {
+                if (arg == "-y" || arg == "-yes") { SkipConfirmation = true; }
+                if (arg == "-d" || arg == "-debug") { DebugMode = true; }
             }
 
             if (SkipConfirmation == false)
             {
                 RestartConfirmed = false;
                 string Key;
-                
+
                 while (RestartConfirmed == false)
                 {
                     Console.WriteLine("Are you sure you want to restart steam? [Y/N]");
@@ -89,19 +115,16 @@ namespace RestartSteam
             if (Process.GetProcessesByName("steam").Length > 0)
             {
                 steamRunning = true;
-                
+
                 try
                 {
-                    if (DebugMode == true)
-                    {
-                        Console.WriteLine("[Debug] Getting Steam install path...");
-                    }
+                    if (DebugMode == true) { Console.WriteLine("[Debug] Getting Steam install path..."); }
 
                     using (RegistryKey regKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam"))
                     {
                         if (DebugMode == true)
                         {
-                            Console.WriteLine("[Debug] Path: Computer\\HKEY_CURRENT_USER\\SOFTWARE\\Wow6432Node\\Valve\\Steam");
+                            Console.WriteLine("[Debug] Key: HKEY_CURRENT_USER\\SOFTWARE\\Wow6432Node\\Valve\\Steam");
                         }
 
                         if (regKey != null)
@@ -134,20 +157,9 @@ namespace RestartSteam
 
                 while (steamRunning == true)
                 {
-                    if (DebugMode == true)
-                    {
-                        Console.WriteLine("[Debug] Checking for Steam...");
-                    }
-                    
-                    if (Process.GetProcessesByName("steam").Length > 0)
-                    {
-                        steamRunning = true;
-                    }
-                    else
-                    {
-                        steamRunning = false;
-                    }
-
+                    if (DebugMode == true) { Console.WriteLine("[Debug] Checking for Steam..."); }
+                    if (Process.GetProcessesByName("steam").Length > 0) { steamRunning = true; }
+                    else { steamRunning = false; }
                     Thread.Sleep(1000);
                 }
 
@@ -158,25 +170,13 @@ namespace RestartSteam
 
                 while (steamRunning == false)
                 {
-                    if (DebugMode == true)
-                    {
-                        Console.WriteLine("[Debug] Checking for Steam...");
-                    }
-
-                    if (Process.GetProcessesByName("steam").Length > 0)
-                    {
-                        steamRunning = true;
-                    }
-                    else
-                    {
-                        steamRunning = false;
-                    }
-
+                    if (DebugMode == true) { Console.WriteLine("[Debug] Checking for Steam..."); }
+                    if (Process.GetProcessesByName("steam").Length > 0) { steamRunning = true; }
+                    else { steamRunning = false; }
                     Thread.Sleep(1000);
                 }
 
                 Thread.Sleep(3000);
-
                 Environment.Exit(0);
             }
             else
