@@ -47,26 +47,14 @@ namespace RestartSteam
                     Console.WriteLine("-yes - Skip confirmation");
                     Console.WriteLine("-debug - Runs the app in debug mode");
                     Console.WriteLine("-version - Shows installed version");
-                    Console.WriteLine("-update - Update to the latest version");
                     Console.WriteLine();
                     Console.WriteLine("These also work with the first letter of each arg, -r, -y, etc.");
                 }
                 if (arg == "-g" || arg == "-github") { Process.Start("https://github.com/KilLo445/RestartSteam"); }
                 if (arg == "-r" || arg == "-restart") { RestartSteam(); }
                 if (arg == "-v" || arg == "-ver" || arg == "-version") { Console.WriteLine($"You have v{Version} installed"); }
-                if (arg == "-u" || arg == "-update") { Update(); }
             }
 
-            Environment.Exit(0);
-        }
-
-        private static void Update()
-        {
-            string installer = Path.Combine(rootPath, "RestartSteamInstaller.exe");
-
-            Console.WriteLine("Opening RestartSteamInstaller.exe");
-            if (File.Exists(installer)) { Process.Start(installer); }
-            else { Console.WriteLine("RestartSteamInstaller.exe does not exist"); }
             Environment.Exit(0);
         }
 
