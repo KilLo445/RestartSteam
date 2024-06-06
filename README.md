@@ -1,6 +1,10 @@
 # RestartSteam
 Very simple command line program I made that restarts Steam, I use this pretty often so I thought other people might too.
 
+### Built With
+
+* [![.NET][.NET]][framework-url]
+
 # Installation
 1. Download `RestartSteam.zip` from the [latest release](https://github.com/KilLo445/RestartSteam/releases/latest)
 2. Extract the contents to a safe location such as `%localappdata%\Programs\RestartSteam` using a program like [7-Zip](https://7-zip.org)
@@ -13,3 +17,7 @@ Very simple command line program I made that restarts Steam, I use this pretty o
    - Alternatively, open `CMD` and run this command, `taskkill /F /IM explorer.exe & start explorer`
 # Arguments
 - -help `Displays all available command line arguments`
+
+[.NET]: https://img.shields.io/badge/.NET_Framework-5C2D91?style=for-the-badge&logo=.net&logoColor=white
+[Framework]: https://img.shields.io/badge/.NET_Framework-4.8-purple
+[framework-url]: https://dotnet.microsoft.com/en-us/download/dotnet-framework
